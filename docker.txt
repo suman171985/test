@@ -1,0 +1,100 @@
+
+Docker & SQL Server
+Why using containers? You can install multiple instances of SQL Server
+No named instance on Linux
+Create and run a container in a few seconds
+Suitable for dev and test purpose
+Collocate different versions of one app
+Portable
+Same user experience on Docker Windows / Mac / Linux and public cloud
+Runs the same everywhere
+Licensing fees
+Same licensing rules than VMs
+
+
+Docker run -dit --name tecmint-web -p 8080:80 -v /home/user/website/:/usr/local/apache2/htdocs/ httpd:2.4
+
+
+
+docker container stop $(docker container ls -aq)
+
+
+-List all the projects running on both cloud(Azure and AWS)
+-List all the AWS services running in AWS for Joulebug
+-Importance and basics of Script
+-Docker
+  *Dockerfile
+  *Images
+  *containers
+  *docker-compose.yml
+  *Docker Hub Repository
+-Introduction of ECS(Elastic container services)
+
+
+------------------------------------------
+
+FROM ubuntu
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install nginx -y
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+
+
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<YourStrong!Passw0rd>' \
+   -p 1433:1433 --name sql1 \
+   -d mcr.microsoft.com/mssql/server:2017-latest
+   
+docker ps -a
+
+docker exec -it sql1 "bash"
+  ----------------------------------- 
+ECS - Elastic Container Services
+
+1. Cluster
+2. Task Defination
+3. Task
+4. Service
+5. ECR (Repository) - Docker Hub
+
+Docker SWarm / Kubernates / docker management tool
+
+sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=hrhk' \
+   -p 1433:1433 --name sql1 \
+   -d mcr.microsoft.com/mssql/server:2017-latest
+   
+   docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=hrhk' \
+   -p 1433:1433 --name sql1 \
+   -d docker pull mcr.microsoft.com/mssql/server
+
+   sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<YourStrong!Passw0rd>' \
+   -p 1433:1433 --name sql1 \
+   -d mcr.microsoft.com/mssql/server:2017-latest
+   
+   docker pull mcr.microsoft.com/mssql/server:vNext-CTP2.0-ubuntu
+
+
+   
+-------------------
+
+Not runn below command ? why?   
+   docker run -d --name testphp -p 8001:8001 php:7.1
+---------------------------
+--------------------------
+
+Task Definition
+This a blueprint that describes how a docker container should launch. If you are already familiar with AWS, it is like a LaunchConfig except instead it is for a docker container instead of a instance. It contains settings like exposed port, docker image, cpu shares, memory requirement, command to run and environmental variables.
+
+Task
+This is a running container with the settings defined in the Task Definition. It can be thought of as an “instance” of a Task Definition.
+
+Service
+Defines long running tasks of the same Task Definition. This can be 1 running container or multiple running containers all using the same Task Definition.
+
+Cluster
+A logic group of EC2 instances. When an instance launches the ecs-agent software on the server registers the instance to an ECS Cluster. This is easily configurable by setting the ECS_CLUSTER variable in /etc/ecs/ecs.config described here.
+
+Container Instance
+This is just an EC2 instance that is part of an ECS Cluster and has docker and the ecs-agent running on it.
+
+   
